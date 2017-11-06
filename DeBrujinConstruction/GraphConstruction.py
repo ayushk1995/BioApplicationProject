@@ -17,3 +17,5 @@ def visualize_de_bruijn_graph(nodes, edges):
     for edge in edges:
         t.edge(edge[0], edge[1])
     t.render('GraphImage')
+
+
