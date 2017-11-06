@@ -1,9 +1,12 @@
-import gvmagic
 from graphviz import Digraph
 import networkx as nx
 import numpy as np
+import nipype
 import matplotlib.pyplot as plt
 from networkx.drawing.nx_agraph import write_dot
+
+
+
 
 
 def construct_de_bruijn_graph(str, k):
@@ -19,9 +22,14 @@ def construct_de_bruijn_graph(str, k):
 
 def visualize_de_bruijn_graph(nodes, edges):
     G = nx.DiGraph()
+    edge2 = []
     for edge in edges:
-        G.add_edges_from(edge)
-    nx.write_dot(G, 'graph.dot')
+        print(edge)
+        edge2.append(tuple(edge))
+
+    G.add_edges_from(edge2)
+
+    nx.drawing.nx_agraph.write_dot(G, 'graph.dot')
 #    pos = nx.spring_layout(G)
 #    nx.draw_networkx_nodes(G, pos, label=node,  node_size=1000)
 #    nx.draw_networkx_edges(G, pos,arrows=True)

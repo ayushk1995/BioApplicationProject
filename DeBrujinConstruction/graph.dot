@@ -1,0 +1,6 @@
+strict digraph "" {
+	CGCG -> GCGT;
+	ACGC -> CGCG;
+	CGTC -> GTCG;
+	GCGT -> CGTC;
+}

@@ -1,7 +1,0 @@
-// De Bruijn Graph
-digraph {
-	AC
-	CG
-	A -> C
-	C -> G
-}
