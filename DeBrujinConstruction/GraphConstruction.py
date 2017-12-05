@@ -1,47 +1,49 @@
 import graphviz as gv
 import RabinKarpHash as hash
 import perfection.czech
+import MinimalPerfectHashing as mph
 
 
-def construct_de_bruijn_graph(str, k):
+def construct_de_bruijn_graph(kmer, k):
     edges = []
     nodes = set()
     node_hash_values = {}
     min_value_list = []
     string_hash_map = {}
     hash_set = set()
-    for i in range(len(str)-k+1):
-        edges.append([str[i:i+k-1], str[i+1:i+k]])
-        nodes.add(str[i:i + k - 1])
-        nodes.add(str[i+1:i+k])
-        node_hash_values.update({str[i:i + k - 1]:hash.rabin_karp_hash(str[i:i + k - 1])})
-        node_hash_values.update({str[i+1:i+k]:hash.rabin_karp_hash(str[i+1:i+k])})
+    rabinKarp_to_mph = {}
+    str_to_mph = {}
+    for i in range(len(kmer)-k+1):
+        edges.append([kmer[i:i + k - 1], kmer[i + 1:i + k]])
+        nodes.add(kmer[i:i + k - 1])
+        nodes.add(kmer[i + 1:i + k])
+        node_hash_values.update({kmer[i:i + k - 1]:hash.rabin_karp_hash(kmer[i:i + k - 1])})
+        node_hash_values.update({kmer[i + 1:i + k]:hash.rabin_karp_hash(kmer[i + 1:i + k])})
 
   #  visualize_de_bruijn_graph(nodes, edges)
+
     hash_set = set(node_hash_values.values())
     if (len(hash_set) == len(node_hash_values)):
-        print("Distinct hashed values by rabin karp")
+        #print(hash_set)
+        #print("Distinct hashed values by rabin karp")
+        rabinKarp_to_mph = mph.mph([str(i) for i in node_hash_values.values()])
     else:
         print("Duplicate hashed values by rabin karp")
 
-    print(node_hash_values)
-    perfect_hash = perfection.make_hash(node_hash_values.values())
-
-    #for i in node_hash_values.values():
-     #   min_value_list.append(perfect_hash(i))
-
-  #  for x in range(len(min_value_list)):
-   #     string_hash_map.update({node_hash_values.keys()[x]:min_value_list[x]})
-
-   # print(string_hash_map)
-   # print(min_value_list)
-    min_value_list.sort()
-   # print(node_hash_values.values())
-    print(min_value_list)
     #print(node_hash_values)
-    if len(set(node_hash_values.values())) == len(node_hash_values.values()):
-        print("true")
-    return nodes, edges, string_hash_map
+
+    for Xkmer,rkpVal in node_hash_values.iteritems():
+        #print Xkmer, rkpVal
+        #print("str to mph")
+        #print(str_to_mph)
+        str_to_mph.update({Xkmer:rabinKarp_to_mph.get(str(rkpVal))})
+
+    #print("str to mph")
+    #print(str_to_mph)
+
+    # if len(set(node_hash_values.values())) == len(node_hash_values.values()):
+    #     print("true")
+    return nodes, edges, str_to_mph
 
 
 def visualize_de_bruijn_graph(nodes, edges):

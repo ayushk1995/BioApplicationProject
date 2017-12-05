@@ -10,18 +10,20 @@
 # Fabiano C. Botelho, and Martin Dietzfelbinger
 import sys
 
-DICTIONARY = "/usr/share/dict/words"
-TEST_WORDS = sys.argv[1:]
-if len(TEST_WORDS) == 0:
-    TEST_WORDS = ['hello', 'goodbye', 'dog', 'cat']
+# DICTIONARY = "/usr/share/dict/words"
+# TEST_WORDS = sys.argv[1:]
+# if len(TEST_WORDS) == 0:
+
 
 
 # Calculates a distinct hash function for a given string. Each value of the
 # integer d results in a different hash value.
 def hash(d, str):
     if d == 0: d = 0x01000193
-
+    #print("In hash")
+    # print(str(str))
     # Use the FNV algorithm from http://isthe.com/chongo/tech/comp/fnv/
+
     for c in str:
         d = ((d * 0x01000193) ^ ord(c)) & 0xffffffff;
 
@@ -34,11 +36,12 @@ def hash(d, str):
 # values of the dictionary.
 def CreateMinimalPerfectHash(dict):
     size = len(dict)
-
+    #print("In MPH")
     # Step 1: Place all of the keys into buckets
     buckets = [[] for i in range(size)]
     G = [0] * size
     values = [None] * size
+    #print(values)
 
     for key in dict.keys():
         buckets[hash(0, key) % size].append(key)
@@ -55,7 +58,9 @@ def CreateMinimalPerfectHash(dict):
 
         # Repeatedly try different values of d until we find a hash function
         # that places all items in the bucket into free slots
+        #print()
         while item < len(bucket):
+            #print("going infinite")
             slot = hash(d, bucket[item]) % size
             if values[slot] != None or slot in slots:
                 d += 1
@@ -70,7 +75,7 @@ def CreateMinimalPerfectHash(dict):
             values[slots[i]] = dict[bucket[i]]
 
         if (b % 1000) == 0:
-            print "bucket %d    r" % (b),
+            #print "bucket %d    r" % (b),
             sys.stdout.flush()
 
     # Only buckets with 1 item remain. Process them more quickly by directly
@@ -89,7 +94,7 @@ def CreateMinimalPerfectHash(dict):
         G[hash(0, bucket[0]) % size] = -slot - 1
         values[slot] = dict[bucket[0]]
         if (b % 1000) == 0:
-            print "bucket %d    r" % (b),
+            #print "bucket %d    r" % (b),
             sys.stdout.flush()
 
     return (G, values)
@@ -102,16 +107,32 @@ def PerfectHashLookup(G, V, key):
     return V[hash(d, key) % len(V)]
 
 
-print "Reading words"
-dict = {}
-line = 1
-for key in open(DICTIONARY, "rt").readlines():
-    dict[key.strip()] = line
-    line += 1
+def mph(rabinKarpVals):
+    #print "Reading words"
+    TEST_WORDS = rabinKarpVals
+    dict = {}
+    line = 1
+    #print type(TEST_WORDS)
+    #print rabinKarpVals
+    #print "Above is test words \n\n"
 
-print "Creating perfect hash"
-(G, V) = CreateMinimalPerfectHash(dict)
+    for key in TEST_WORDS:
+        dict[key] = line
+        line += 1
 
-for word in TEST_WORDS:
-    line = PerfectHashLookup(G, V, word)
-    print "Word %s occurs on line %d" % (word, line)
+    #print "Creating perfect hash"
+    (G, V) = CreateMinimalPerfectHash(dict)
+    #print("here")
+    #print(G)
+    #print("The above is G")
+    rabinKarp_to_mph = {}
+    #print len(TEST_WORDS)
+    for word in TEST_WORDS:
+        line = PerfectHashLookup(G, V, word)
+        rabinKarp_to_mph.update({word:line-1})
+        #print rabinKarp_to_mph
+        #print "Rabin Karp to mph here"
+
+    #print rabinKarp_to_mph.get('8')
+    return rabinKarp_to_mph
+        #print "Word %s occurs on line %d" % (word, line)
