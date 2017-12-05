@@ -6,9 +6,9 @@ from collections import deque
 class TreeNode:
 
     height = 0
-    
-    def __init__(self, key, val, level, parent, isRoot):
-        self.key = key
+
+    def __init__(self, val, level, parent, isRoot):
+
         # value inside the node (hash value)
         self.val = val
         # level of the node in relation to the root, i.e. root has level 0
@@ -61,15 +61,13 @@ initialize
                 if self.parent.val == hashedValue:
                     return  findRoot(self.parent)
 
-    def findLeaf(kmer_string):
+    #def findLeaf(kmer_string):
 
 
 
 
-    #def insertNode(self,key, val, parent, isRoot):
-     #   newLevel = ++self.parent.level
-        # call rabin karp hash
-      #  return __init__(self, key, val, newLevel, parent, isRoot)
+    def insertNode(self,val, 0, None, True):
+        return __init__(self, val, newLevel, None, isRoot)
 
 
     # function to check if the node is a root

@@ -9,63 +9,132 @@ import math
 class Forest:
 
     maxTreeHeight = 1
+
+
+    #key is address of node and value is list typle in <value, visited>
     nodeDict = {}
+    #list of all the tree roots for deletition and insertion purposes
     treeRoots = list()
+    #list of all the leafs (may not be needed anymore)
     treeLeafs = list()
-    countNumberofNodes = 0
+    #number of kmers to compare and see if we have have added all of the kmers from the in-out matrix
+    countNumberofKmers = 0
 
     def __init__(self,inOutMatrix,k, alphabetSize):
-
+        if not inOutMatrix:
+            print("No in and out matrix")
+            return
 
         maxTreeHeight = 3*k*math*.log(alphabetSize,2)
 
-        initialNode = TreeNode(id(initialNode),str[0:k-1],0,None,True)
+        #definition of a node: def __init__(val, level, parent, isRoot):
+
+        #may not need id(initialNode)
+        initialNode = TreeNode(str[0:k-1],0,None,True)
         treeRoots.append(initialRootNode)
-        dict.update(initialRoot:[(str[0:k-1],0)])
+
+        curr = initialNode
 
 
-        #condition to know when to stop
-        #i will be iterated everytime we encounter a node that is marked as  visited
-        while countNumberofNodes <= inOutMatrix.size:
-            #if tree is full
-            if treeRoots[treeNum].level == maxTreeHeight:
-                newRootNode = TreeNode(id(newRootNode),str[i:i+k-1],0,None,True)
+        dict.update(curr:[(str[0:k-1],1)])
+
+        #start at index 0
+        #while not all kmers from inoutMatrix have been visited
+        while countNumberofKmers <= inOutMatrix.size:
+            #if tree is full and we are at an overflow
+            #we make a new root
+            if curr.level > maxTreeHeight:
+                #reset the level of the root
+                curr.level = 0
+                #initialize new root with string value
+
+                ##!!!!!! still need pre value and kmer value from hash function
+                ##!!!!!! we can get this from insert
+                newRootNode = TreeNode(curr.val,0,None,True)
+
+                #append to roots list
                 treeRoots.append(newRootNode)
-                ++countNumberofNodes
-                ++treeNum
+
+                #the number of kmers we have visited has increased
+                ++countNumberofKmers
+
+                #update current
+                curr = newRootNode
 
 
             #else do a regular insert
             else:
-                insert_init(newRootNode,newRootNode.value)
+                #is called recursively and returns the "overflow node"
+                curr = insert_init(curr,curr.val)
 
 
-    def insert_init(Node, Node.value, count):
+    #recursive function to build tree
+    def insert_init(node, kmer):
 
-        kmerList = list(Node.val)
-        newLevel = Node.level + 1
+        #initialize current node
+        curr = node
 
-        if Node.visited == True:
-            return
+        #turn Node value to a list in order to rotate and update the value
+        kmerList = list(node.val)
+        #update the node level that we are going to add
+        newLevel = node.level + 1
 
-        elif newLevel > maxTreeHeight:
+        #if the new level is the max height we have a leaf
+        if newLevel == maxTreeHeight:
+            #put into leaf list
             treeLeafs.append(Node)
-            return
 
+
+        #if we already visited the Node we return
+        if node.visited == True:
+            return node
+
+        #else we are not full and we have not visited the node
         else:
-            arrayOut = inOutMatrix.getOut(Node.value)
+            #{
+            #get all the headers which return true for the out matrix
+            arrayOut = inOutMatrix.getOut(node.value)
+
+            #exit if no outgoing edges
+            if not arrayOut:
+                return curr
+
+
+            #if the new height is overflown (above the max tree height we return and get that node)
+            if newLevel > maxTreeHeight:
+                return curr
+            #loop through all the true values to add to the forest
             for index in range(0, len(arrayOut)):
+
                 #get header columns marked as 1
-                #put it to a chracter
-                #get value prev  from in-out matrix
+                #prevalue is the value in the header of the out matrix: e.g. a,t,c,g
+                #put it to a chracter (variable preVal)
+                preVal = arrayOut[index]
+                #put it into a deque in order to manipulate the list (rotate the list)
                 valueDeque = deque(kmerList)
+                #rotate the list left (kmer)
                 valueDeque = parent.rotate(-1)
+                #convert back to list (kmer)
                 valueList = list(collections.deque(valueDeque))
+                #add column header to the end of the kmer value
                 valueList[-1] = prevVal
                 #check the hash of the value = hashValue
-                newNode = TreeNode(id(newNode), hashValue, newLevel, Node, False)
+                #!!!!!still need to do
+
+                #create a new node (internal node)with hash value in value
+                newNode = TreeNode(hashValue, newLevel, node, False)
+                #convert list back to a string
                 kmer_string = ''.join(valueList)
+                #mark the kmer as visited
+                newNode.visit = True
+                #add the node to the dictionary with the hashvalue
                 dict.update(newNode:hashValue)
-                ++countNumberofNodes
+                #increase the number of kmers for the check above (that is, cehcking if we have visited all the kmers)
+                ++countNumberofKmers
                 #insert recursively
-                insert_init(newNode, kmer_string)
+                #update curr pointer
+                curr = newNode
+                #call recursively until we either reach max height or reach all the nodes visited
+                curr = insert_init(curr, kmer_string)
+                #}
+            return curr
