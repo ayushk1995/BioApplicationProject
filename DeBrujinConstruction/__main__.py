@@ -25,7 +25,7 @@ def main():
 
     fileData = open("test.txt", "r").read().replace('\n', '')
     #print(fileData)
-    nodes, edges, string_hash_map = GraphConstruction.construct_de_bruijn_graph(fileData, k)
+    nodes, edges, string_hash_map = GraphConstruction.construct_de_bruijn_graph("ACGATCGATAGCTAGATCGATAGCTA", k)
     print("No. of nodes in de brujin graph", len(nodes))
    # print(edges)
     In_Out_Matrix.construct_in_out_matrix(nodes, edges, string_hash_map)

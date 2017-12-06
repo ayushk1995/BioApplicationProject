@@ -20,12 +20,12 @@ class Forest:
     #number of kmers to compare and see if we have have added all of the kmers from the in-out matrix
     countNumberofKmers = 0
 
-    def __init__(self,inOutMatrix,k, alphabetSize):
+    def __init__(self,inOutMatrix,k):
         if not inOutMatrix:
             print("No in and out matrix")
             return
 
-        maxTreeHeight = 3*k*math*.log(alphabetSize,2)
+        maxTreeHeight = 3*k*math.log(5,2)
 
         #definition of a node: def __init__(val, level, parent, isRoot):
 
@@ -36,7 +36,7 @@ class Forest:
         curr = initialNode
 
 
-        dict.update(curr:[(str[0:k-1],1)])
+        dict.update({curr:[(str[0:k-1],1)]})
 
         #start at index 0
         #while not all kmers from inoutMatrix have been visited
@@ -69,7 +69,7 @@ class Forest:
 
 
     #recursive function to build tree
-    def insert_init(node, kmer):
+    def insert_init(self, node, kmer):
 
         #initialize current node
         curr = node
@@ -93,6 +93,9 @@ class Forest:
         else:
             #{
             #get all the headers which return true for the out matrix
+            # Ayush
+            #function : I/p : string of a node (kmer)
+            #            o/p : List of column headers
             arrayOut = inOutMatrix.getOut(node.value)
 
             #exit if no outgoing edges
@@ -128,7 +131,7 @@ class Forest:
                 #mark the kmer as visited
                 newNode.visit = True
                 #add the node to the dictionary with the hashvalue
-                dict.update(newNode:hashValue)
+                dict.update({newNode:hashValue})
                 #increase the number of kmers for the check above (that is, cehcking if we have visited all the kmers)
                 ++countNumberofKmers
                 #insert recursively

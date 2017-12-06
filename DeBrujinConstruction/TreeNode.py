@@ -17,6 +17,8 @@ class TreeNode:
         self.parent = parent
         # boolean value if its a root
         self.isRoot = isRoot
+        
+        self.visited = False
 
 
 
@@ -24,14 +26,14 @@ class TreeNode:
 
 
 #TODO: take care of root case
-initialize
+#initialize
 
     def deleteNode(kmer_string):
         rootFound = findRoot(kmer_string)
         #calls find root: if findroot is True then delete from in and out
 
 
-    def initializeTree(kmer_values):
+    #def initializeTree(kmer_values):
 
     def findRoot(kmer_string):
         if self.level == 0:
@@ -66,8 +68,9 @@ initialize
 
 
 
-    def insertNode(self,val, 0, None, True):
-        return __init__(self, val, newLevel, None, isRoot)
+    def insertNode(self,val, None, True):
+        #hash new node
+        return __init__(self, val, 0, None, isRoot)
 
 
     # function to check if the node is a root
