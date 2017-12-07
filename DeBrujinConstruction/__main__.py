@@ -23,12 +23,17 @@ def main():
     #hash_set = StaticRabinKarp.static_rabin_karp(permuted_set)
     #print(hash_set)
     #perfect_hash = perfection.make_hash(hash_set.values())
-
-    fileData = open("test.txt", "r").read().replace('\n', '')
-    #print(fileData)
-    nodes, edges, string_hash_map, node_hash_values = GraphConstruction.construct_de_bruijn_graph(fileData, k)
-    # print(nodes)
-    # print(string_hash_map)
+    fileData = ""
+    with open('10mb.fastq', 'r') as f:
+        for count, line in enumerate(f, start=3):
+            if count % 4 == 0:
+                fileData += line.replace('\n', '')
+                # print(line)
+    # fileData = open("test.txt", "r").read().replace('\n', '')
+    # print(fileData)
+    nodes, edges, string_hash_map, node_hash_values = GraphConstruction.construct_de_bruijn_graph("ACGATAGCTAGNAGTCGATCT", k)
+    print(nodes)
+    print(string_hash_map)
     print("No. of nodes in de brujin graph", len(nodes))
    # print(edges)
     In_Out_Matrix.construct_in_out_matrix(nodes, edges, string_hash_map)
@@ -39,7 +44,7 @@ def main():
     new_str_to_rk = str_to_rk.copy()
     new_str_to_rk.update(node_hash_values)
     print("computing mph")
-    # print(mph.mph(new_str_to_rk))
+    print(mph.mph(new_str_to_rk))
 
 
 
