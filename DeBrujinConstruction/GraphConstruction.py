@@ -18,7 +18,7 @@ def construct_de_bruijn_graph(kmer, k):
         node_hash_values.update({kmer[i:i + k - 1]:hash.rabin_karp_hash(kmer[i:i + k - 1])})
         node_hash_values.update({kmer[i + 1:i + k]:hash.rabin_karp_hash(kmer[i + 1:i + k])})
 
-  #  visualize_de_bruijn_graph(nodes, edges)
+    # visualize_de_bruijn_graph(nodes, edges)
 
     hash_set = set(node_hash_values.values())
     if (len(hash_set) == len(node_hash_values)):
@@ -28,7 +28,7 @@ def construct_de_bruijn_graph(kmer, k):
         print("Duplicate hashed values by rabin karp")
 
 
-    return nodes, edges, str_to_mph
+    return nodes, edges, str_to_mph, node_hash_values
 
 
 def visualize_de_bruijn_graph(nodes, edges):

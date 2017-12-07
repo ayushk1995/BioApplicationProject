@@ -14,7 +14,7 @@ def rabin_karp_hash(node):
     else:
         new_char_offset = (ord(node[len(node)-1])-ord("A")+1)
         temp1 = (previous_hash_value - ((ord(first_char)-ord("A")+1)*(5**(len(node)-1-char_num))))
-        current_hash_value = (temp1 *(5) + new_char_offset) % 7777774777777
+        current_hash_value = (temp1 *(5) + new_char_offset) % 2425967623052370772757633156976982469681
 
     previous_hash_value = current_hash_value
     first_char = node[len(node) - 1]

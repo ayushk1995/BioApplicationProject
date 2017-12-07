@@ -134,5 +134,6 @@ def mph(rabinKarpVals):
         #print "Rabin Karp to mph here"
 
     #print rabinKarp_to_mph.get('8')
+    # print(rabinKarp_to_mph)
     return rabinKarp_to_mph
         #print "Word %s occurs on line %d" % (word, line)
